@@ -15,7 +15,7 @@ semantic_model = generate_semantic_model(
     table='DAILY_REVENUE'
 )
 
-with open('semantic_model.yaml', 'w') as f:
+with open('example_semantic_model.yaml', 'w') as f:
     yaml.dump(semantic_model, f, indent=4)
 
 print(yaml.dump(semantic_model, indent=4))
