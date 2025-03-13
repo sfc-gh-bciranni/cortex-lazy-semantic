@@ -1,0 +1,124 @@
+description: A semantic model for analyzing daily revenue, costs, and forecasts across
+    products and regions
+name: Daily Revenue Model
+tables:
+-   base_table:
+        database: DEMO
+        schema: DEMO_SCHEMA
+        table: DAILY_REVENUE
+    description: Daily revenue, costs, and forecasts by product and region
+    dimensions:
+    -   data_type: NUMBER
+        description: The unique identifier for the product
+        expr: PRODUCT_ID
+        is_enum: true
+        name: product_id
+        sample_values:
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+        synonyms:
+        - product
+        - item id
+        unique: false
+    -   data_type: NUMBER
+        description: The unique identifier for the region
+        expr: REGION_ID
+        is_enum: true
+        name: region_id
+        sample_values:
+        - '1'
+        - '2'
+        - '3'
+        - '4'
+        - '5'
+        synonyms:
+        - region
+        - location id
+        unique: false
+    facts:
+    -   data_type: NUMBER
+        description: The actual revenue amount
+        expr: REVENUE
+        name: revenue
+        sample_values:
+        - '2918.07'
+        - '4375.29'
+        synonyms:
+        - sales
+        - income
+    -   data_type: NUMBER
+        description: The cost of goods sold
+        expr: COGS
+        name: cogs
+        sample_values:
+        - '2442.38'
+        - '2104.09'
+        synonyms:
+        - cost of goods sold
+        - costs
+    -   data_type: NUMBER
+        description: The forecasted revenue amount
+        expr: FORECASTED_REVENUE
+        name: forecasted_revenue
+        sample_values:
+        - '1679.02'
+        - '1781.08'
+        synonyms:
+        - predicted revenue
+        - revenue forecast
+    metrics:
+    -   description: The sum of all revenue
+        expr: SUM(REVENUE)
+        name: total_revenue
+        synonyms:
+        - total sales
+        - revenue sum
+    -   description: The sum of all costs of goods sold
+        expr: SUM(COGS)
+        name: total_cogs
+        synonyms:
+        - total costs
+        - total cost of goods sold
+    -   description: The sum of all forecasted revenue
+        expr: SUM(FORECASTED_REVENUE)
+        name: total_forecasted_revenue
+        synonyms:
+        - total predicted revenue
+        - forecasted revenue sum
+    -   description: The total gross profit (revenue minus costs)
+        expr: SUM(REVENUE - COGS)
+        name: gross_profit
+        synonyms:
+        - profit
+        - margin
+    -   description: The average revenue per transaction
+        expr: AVG(REVENUE)
+        name: average_revenue
+        synonyms:
+        - mean revenue
+        - avg sales
+    name: daily_revenue
+    primary_key:
+        columns:
+        - DATE
+        - PRODUCT_ID
+        - REGION_ID
+    synonyms:
+    - revenue
+    - sales
+    - daily sales
+    time_dimensions:
+    -   data_type: TIMESTAMP_NTZ
+        description: The date of the revenue transaction
+        expr: DATE
+        name: date
+        sample_values:
+        - '2024-10-05 15:07:24.446047'
+        - '2024-04-25 15:07:24.446047'
+        synonyms:
+        - transaction date
+        - sales date
+        unique: false

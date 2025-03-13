@@ -5,7 +5,7 @@ from typing import Dict, Any
 import pandas as pd
 
 
-def generate_semantic_model(
+def generate_semantic_model_from_dataframe(
         session: Session,
         data: pd.DataFrame,
         database: str,
@@ -49,3 +49,36 @@ def generate_semantic_model(
         max_tokens
     )
     return semantic_model
+
+def generate_semantic_model_from_table(
+        session: Session,
+        database: str,
+        schema: str,
+        table: str,
+        model: str = 'claude-3-5-sonnet',
+        max_tokens: int = 4000
+) -> Dict[str, Any]:
+    """
+    Generate a semantic model from a table in Snowflake.
+
+    Args:
+        session: The Snowflake session.
+        database: The database name.
+        schema: The schema name.
+        table: The table name.
+        model: The model to use for the semantic model.
+        max_tokens: The maximum number of tokens to use for the semantic model.
+
+    Returns:
+        The semantic model as a dictionary.
+    """
+    table_sample = session.table(f"{database}.{schema}.{table}").sample(n=50).to_pandas()
+    return generate_semantic_model_from_dataframe(
+        session,
+        table_sample,
+        database,
+        schema,
+        table,
+        model,
+        max_tokens
+    )

@@ -4,9 +4,11 @@ A tool to generate a semantic model for a pandas DataFrame. I am often lazy with
 I've done testing to get it valid with the JSON Schema for the SemanticModel - if you have any issues, please
 submit an issue and I'll try to fix it.
 
+For examples, see 'example_semantic_model_from_dataframe.yaml' and 'example_semantic_model_from_table.yaml'.
+
 ## Usage
 
-Say you have a pandas DataFrame and you want to generate a semantic model for it.
+Say you have either a table in Snowflake, or a pandas DataFrame and you want to generate a semantic model for it.
 You may have a CSV file that you upload and want to ask questions about.
 
 Maybe the data looks like this:
@@ -20,15 +22,29 @@ Maybe the data looks like this:
 
 and so on.
 
-You can generate a semantic model for this data by running the following code:
+You can generate a semantic model for this data from a table in Snowflake (`DEMO.DEMO_SCHEMA.DAILY_REVENUE`) by running the following code:
 
 ```python
-from cortex_lazy_semantic.generator import generate_semantic_model
+from cortex_lazy_semantic.generator import generate_semantic_model_from_table
 
-semantic_model = generate_semantic_model(
+semantic_model = generate_semantic_model_from_table(
+    session=session,
+    database='DEMO',
+    schema='DEMO_SCHEMA',
+    table='DAILY_REVENUE'
+)
+```
+
+or if you have a pandas DataFrame, you can generate a semantic model for it by running the following code. Note here that the table
+name is not used in the generation process - it's where you would put the table if you were to save it to Snowflake for use in Analyst.
+
+```python
+from cortex_lazy_semantic.generator import generate_semantic_model_from_dataframe
+
+semantic_model = generate_semantic_model_from_dataframe(
     session=session,
     data=data,
-    database='DEMO_DB',
+    database='DEMO',
     schema='DEMO_SCHEMA',
     table='DAILY_REVENUE'
 )

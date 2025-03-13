@@ -3,13 +3,13 @@ description: A semantic model for analyzing daily revenue, costs, and forecasts 
 name: Daily Revenue Model
 tables:
 -   base_table:
-        database: DEMO_DB
+        database: DEMO
         schema: DEMO_SCHEMA
         table: DAILY_REVENUE
     description: Daily revenue, costs, and forecasts by product and region
     dimensions:
     -   data_type: NUMBER
-        description: Unique identifier for the product
+        description: The unique identifier for the product
         expr: Product_id
         is_enum: true
         name: product_id
@@ -21,10 +21,10 @@ tables:
         - '5'
         synonyms:
         - product
-        - item id
+        - product identifier
         unique: false
     -   data_type: NUMBER
-        description: Unique identifier for the region
+        description: The unique identifier for the region
         expr: Region_id
         is_enum: true
         name: region_id
@@ -36,11 +36,11 @@ tables:
         - '5'
         synonyms:
         - region
-        - location id
+        - region identifier
         unique: false
     facts:
     -   data_type: FLOAT
-        description: Actual revenue amount
+        description: The actual revenue amount
         expr: REVENUE
         name: revenue
         sample_values:
@@ -49,9 +49,9 @@ tables:
         - '4755.99'
         synonyms:
         - sales
-        - income
+        - sales amount
     -   data_type: FLOAT
-        description: Cost of goods sold
+        description: The cost of goods sold
         expr: COGS
         name: cogs
         sample_values:
@@ -62,7 +62,7 @@ tables:
         - cost of goods sold
         - costs
     -   data_type: FLOAT
-        description: Forecasted revenue amount
+        description: The forecasted revenue amount
         expr: FORECASTED_REVENUE
         name: forecasted_revenue
         sample_values:
@@ -70,39 +70,40 @@ tables:
         - '2894.60'
         - '1353.30'
         synonyms:
+        - forecast
         - predicted revenue
         - revenue forecast
     metrics:
-    -   description: Total revenue across all transactions
+    -   description: The total revenue across all records
         expr: SUM(REVENUE)
         name: total_revenue
         synonyms:
         - total sales
         - revenue sum
-    -   description: Total cost of goods sold across all transactions
+    -   description: The total cost of goods sold across all records
         expr: SUM(COGS)
         name: total_cogs
         synonyms:
         - total costs
         - total cost of goods sold
-    -   description: Total forecasted revenue across all transactions
+    -   description: The total forecasted revenue across all records
         expr: SUM(FORECASTED_REVENUE)
         name: total_forecasted_revenue
         synonyms:
         - total forecast
-        - predicted total revenue
-    -   description: Gross profit (revenue minus cost of goods sold)
+        - forecasted revenue sum
+    -   description: The gross profit (revenue minus costs) across all records
         expr: SUM(REVENUE - COGS)
         name: gross_profit
         synonyms:
         - profit
         - margin
-    -   description: Average revenue per transaction
-        expr: AVG(REVENUE)
-        name: average_revenue
+    -   description: The percentage difference between forecasted and actual revenue
+        expr: ABS(SUM(FORECASTED_REVENUE - REVENUE)) / NULLIF(SUM(REVENUE), 0) * 100
+        name: forecast_accuracy
         synonyms:
-        - mean revenue
-        - avg sales
+        - forecast error
+        - prediction accuracy
     name: daily_revenue
     primary_key:
         columns:
@@ -115,13 +116,14 @@ tables:
     - daily sales
     time_dimensions:
     -   data_type: TIMESTAMP_NTZ
-        description: The date of the revenue transaction
+        description: The date of the revenue record
         expr: DATE
         name: date
         sample_values:
         - '2022-11-09 15:07:24.446047'
         - '2022-11-10 15:07:24.446047'
         synonyms:
-        - transaction date
+        - date
         - sales date
+        - transaction date
         unique: false
