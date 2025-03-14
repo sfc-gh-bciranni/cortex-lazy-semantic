@@ -1,6 +1,6 @@
 # Cortex Lazy Semantic
 
-A tool to generate a semantic model for a pandas DataFrame. I am often lazy with this and you might be too.
+A tool to generate a semantic model for any table in Snowflake, or a pandas dataframe you'll put there. I am often lazy with this and you might be too.
 I've done testing to get it valid with the JSON Schema for the SemanticModel - if you have any issues, please
 submit an issue and I'll try to fix it.
 
