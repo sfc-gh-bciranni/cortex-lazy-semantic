@@ -1,15 +1,17 @@
 # Cortex Lazy Semantic
 
-A tool to generate a semantic model for any table in Snowflake, or a pandas dataframe you'll put there. I am often lazy with this and you might be too.
-I've done testing to get it valid with the JSON Schema for the SemanticModel - if you have any issues, please
-submit an issue and I'll try to fix it.
+Quickly go from sample of your table, to semantic model.
 
-For examples, see 'example_semantic_model_from_dataframe.yaml' and 'example_semantic_model_from_table.yaml'.
+Cortex Lazy Semantic generates a semantic model for any table in Snowflake, or a pandas dataframe you'll put there. Behind the scenes, it uses claude and snowflake's structured outputs, along with a sample of the data in question, to build a dictionary with all the required fields for an Analyst semantic model.
+
+For output examples, see:
+- `example_semantic_model_from_dataframe.yaml`
+- `example_semantic_model_from_table.yaml`
 
 ## Usage
 
 Say you have either a table in Snowflake, or a pandas DataFrame and you want to generate a semantic model for it.
-You may have a CSV file that you upload and want to ask questions about.
+You may have a table you want to point Analyst at, but want a simple starting point for the model - or you may just have a CSV file that you want to upload and want to ask questions about.
 
 Maybe the data looks like this:
 
@@ -22,7 +24,7 @@ Maybe the data looks like this:
 
 and so on.
 
-You can generate a semantic model for this data from a table in Snowflake (`DEMO.DEMO_SCHEMA.DAILY_REVENUE`) by running the following code:
+You can generate a semantic model for this data from a table in Snowflake (`DEMO.DEMO_SCHEMA.DAILY_REVENUE`):
 
 ```python
 from cortex_lazy_semantic.generator import generate_semantic_model_from_table
@@ -35,7 +37,7 @@ semantic_model = generate_semantic_model_from_table(
 )
 ```
 
-or if you have a pandas DataFrame, you can generate a semantic model for it by running the following code. Note here that the table
+or if you have a pandas DataFrame, you can also generate a semantic model for it. Note here that the table
 name is not used in the generation process - it's where you would put the table if you were to save it to Snowflake for use in Analyst.
 
 ```python
